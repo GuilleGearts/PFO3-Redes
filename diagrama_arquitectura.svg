@@ -1,0 +1,190 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 850" width="100%" height="100%" style="background:#0f172a; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;">
+  <defs>
+    <!-- Filtros de sombra y glow -->
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.4"/>
+    </filter>
+    <filter id="glow-blue" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+    
+    <!-- Gradientes -->
+    <linearGradient id="grad-title" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#818cf8"/>
+    </linearGradient>
+    <linearGradient id="grad-client" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="grad-lb" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0369a1"/>
+      <stop offset="100%" stop-color="#0284c7"/>
+    </linearGradient>
+    <linearGradient id="grad-worker" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e1b4b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="grad-mq" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ea580c"/>
+      <stop offset="100%" stop-color="#f97316"/>
+    </linearGradient>
+    <linearGradient id="grad-db" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#064e3b"/>
+      <stop offset="100%" stop-color="#022c22"/>
+    </linearGradient>
+    <linearGradient id="grad-s3" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#78350f"/>
+      <stop offset="100%" stop-color="#451a03"/>
+    </linearGradient>
+
+    <!-- Marcadores de flechas -->
+    <marker id="arrow-blue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#38bdf8"/>
+    </marker>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#fb923c"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#34d399"/>
+    </marker>
+  </defs>
+
+  <!-- Encabezado -->
+  <g transform="translate(50, 40)">
+    <text x="550" y="0" text-anchor="middle" fill="url(#grad-title)" font-size="26" font-weight="bold" letter-spacing="1">ARQUITECTURA DE SISTEMA DISTRIBUIDO (CLIENTE-SERVIDOR)</text>
+    <text x="550" y="26" text-anchor="middle" fill="#94a3b8" font-size="14">Rediseño con Sockets, Balanceador, Workers Multihilo, RabbitMQ y Almacenamiento PostgreSQL/S3</text>
+    <text x="550" y="46" text-anchor="middle" fill="#64748b" font-size="12">PFO 3 - Programación sobre Redes | Guillermo Aybar | TSDS 2026</text>
+  </g>
+
+  <!-- ================= CAPA 1: CLIENTES ================= -->
+  <g transform="translate(60, 110)">
+    <rect width="1080" height="100" rx="12" fill="#1e293b" fill-opacity="0.5" stroke="#334155" stroke-dasharray="4 4"/>
+    <text x="20" y="25" fill="#38bdf8" font-size="12" font-weight="bold" letter-spacing="0.5">CAPA 1: CLIENTES DISTRIBUIDOS</text>
+
+    <!-- Cliente Móvil -->
+    <g transform="translate(60, 35)" filter="url(#shadow)">
+      <rect width="280" height="52" rx="8" fill="url(#grad-client)" stroke="#0284c7" stroke-width="1.5"/>
+      <circle cx="28" cy="26" r="14" fill="#0284c7" fill-opacity="0.3"/>
+      <text x="28" y="31" text-anchor="middle" fill="#38bdf8" font-size="16">📱</text>
+      <text x="55" y="24" fill="#f8fafc" font-size="13" font-weight="600">Clientes Móviles</text>
+      <text x="55" y="40" fill="#94a3b8" font-size="11">iOS / Android (TCP Sockets &amp; HTTPS)</text>
+    </g>
+
+    <!-- Cliente Web -->
+    <g transform="translate(400, 35)" filter="url(#shadow)">
+      <rect width="280" height="52" rx="8" fill="url(#grad-client)" stroke="#0284c7" stroke-width="1.5"/>
+      <circle cx="28" cy="26" r="14" fill="#0284c7" fill-opacity="0.3"/>
+      <text x="28" y="31" text-anchor="middle" fill="#38bdf8" font-size="16">🌐</text>
+      <text x="55" y="24" fill="#f8fafc" font-size="13" font-weight="600">Clientes Web SPA</text>
+      <text x="55" y="40" fill="#94a3b8" font-size="11">React / Vue / WebSockets / Fetch</text>
+    </g>
+
+    <!-- Cliente CLI / Sockets -->
+    <g transform="translate(740, 35)" filter="url(#shadow)">
+      <rect width="280" height="52" rx="8" fill="url(#grad-client)" stroke="#0284c7" stroke-width="1.5"/>
+      <circle cx="28" cy="26" r="14" fill="#0284c7" fill-opacity="0.3"/>
+      <text x="28" y="31" text-anchor="middle" fill="#38bdf8" font-size="16">💻</text>
+      <text x="55" y="24" fill="#f8fafc" font-size="13" font-weight="600">Clientes Consola (CLI)</text>
+      <text x="55" y="40" fill="#94a3b8" font-size="11">Python Sockets TCP (cliente.py)</text>
+    </g>
+  </g>
+
+  <!-- Flechas Capa 1 -> Capa 2 -->
+  <path d="M 260 210 L 260 240 L 520 240 L 520 260" fill="none" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <path d="M 600 210 L 600 260" fill="none" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <path d="M 880 210 L 880 240 L 680 240 L 680 260" fill="none" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow-blue)"/>
+
+  <!-- ================= CAPA 2: BALANCEADOR DE CARGA ================= -->
+  <g transform="translate(360, 265)" filter="url(#shadow)">
+    <rect width="480" height="75" rx="10" fill="url(#grad-lb)" stroke="#38bdf8" stroke-width="2"/>
+    <text x="240" y="28" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">⚖️ BALANCEADOR DE CARGA (Nginx / HAProxy)</text>
+    <text x="240" y="48" text-anchor="middle" fill="#e0f2fe" font-size="12">Reverse Proxy TCP / HTTP | Algoritmo Round-Robin &amp; Least Connections</text>
+    <text x="240" y="64" text-anchor="middle" fill="#bae6fd" font-size="11">SSL/TLS Termination | Health Checks de Nodos en Vivo</text>
+  </g>
+
+  <!-- Flechas Capa 2 -> Capa 3 (Servidores Workers) -->
+  <path d="M 460 340 L 460 380 L 240 380 L 240 405" fill="none" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <path d="M 600 340 L 600 405" fill="none" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <path d="M 740 340 L 740 380 L 960 380 L 960 405" fill="none" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow-blue)"/>
+
+  <!-- ================= CAPA 3: SERVIDORES WORKERS ================= -->
+  <g transform="translate(60, 410)">
+    <rect width="1080" height="155" rx="12" fill="#1e1b4b" fill-opacity="0.3" stroke="#4338ca" stroke-dasharray="4 4"/>
+    <text x="20" y="24" fill="#818cf8" font-size="12" font-weight="bold" letter-spacing="0.5">CAPA 3: SERVIDORES WORKERS CON POOL DE HILOS (PYTHON SOCKETS)</text>
+
+    <!-- Servidor Worker 1 -->
+    <g transform="translate(30, 35)" filter="url(#shadow)">
+      <rect width="320" height="105" rx="8" fill="url(#grad-worker)" stroke="#6366f1" stroke-width="1.5"/>
+      <text x="160" y="24" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="bold">🖥️ Servidor Worker 1 (servidor.py)</text>
+      <text x="160" y="42" text-anchor="middle" fill="#a5b4fc" font-size="11">Socket TCP Listener (Port 65432)</text>
+      <!-- Sub-caja Thread Pool -->
+      <rect x="15" y="52" width="290" height="42" rx="6" fill="#312e81" stroke="#4f46e5" stroke-width="1"/>
+      <text x="160" y="69" text-anchor="middle" fill="#c7d2fe" font-size="11" font-weight="600">🧵 Pool de Hilos (ThreadPoolExecutor)</text>
+      <text x="160" y="85" text-anchor="middle" fill="#93c5fd" font-size="10">Hilo 1 | Hilo 2 | Hilo 3 | Hilo 4 (CPU/IO)</text>
+    </g>
+
+    <!-- Servidor Worker 2 -->
+    <g transform="translate(380, 35)" filter="url(#shadow)">
+      <rect width="320" height="105" rx="8" fill="url(#grad-worker)" stroke="#6366f1" stroke-width="1.5"/>
+      <text x="160" y="24" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="bold">🖥️ Servidor Worker 2 (servidor.py)</text>
+      <text x="160" y="42" text-anchor="middle" fill="#a5b4fc" font-size="11">Socket TCP Listener (Port 65433)</text>
+      <!-- Sub-caja Thread Pool -->
+      <rect x="15" y="52" width="290" height="42" rx="6" fill="#312e81" stroke="#4f46e5" stroke-width="1"/>
+      <text x="160" y="69" text-anchor="middle" fill="#c7d2fe" font-size="11" font-weight="600">🧵 Pool de Hilos (ThreadPoolExecutor)</text>
+      <text x="160" y="85" text-anchor="middle" fill="#93c5fd" font-size="10">Hilo 1 | Hilo 2 | Hilo 3 | Hilo 4 (CPU/IO)</text>
+    </g>
+
+    <!-- Servidor Worker N -->
+    <g transform="translate(730, 35)" filter="url(#shadow)">
+      <rect width="320" height="105" rx="8" fill="url(#grad-worker)" stroke="#6366f1" stroke-width="1.5"/>
+      <text x="160" y="24" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="bold">🖥️ Servidor Worker N (Escalado)</text>
+      <text x="160" y="42" text-anchor="middle" fill="#a5b4fc" font-size="11">Socket TCP Listener (Port 6543N)</text>
+      <!-- Sub-caja Thread Pool -->
+      <rect x="15" y="52" width="290" height="42" rx="6" fill="#312e81" stroke="#4f46e5" stroke-width="1"/>
+      <text x="160" y="69" text-anchor="middle" fill="#c7d2fe" font-size="11" font-weight="600">🧵 Pool de Hilos (ThreadPoolExecutor)</text>
+      <text x="160" y="85" text-anchor="middle" fill="#93c5fd" font-size="10">Hilo 1 | Hilo 2 | ... | Hilo N (Autoescalable)</text>
+    </g>
+  </g>
+
+  <!-- Flechas Bidireccionales Capa 3 <-> Capa 4 (RabbitMQ) -->
+  <path d="M 250 565 L 250 600 L 460 600 L 460 620" fill="none" stroke="#fb923c" stroke-width="2" marker-end="url(#arrow-orange)"/>
+  <path d="M 600 565 L 600 620" fill="none" stroke="#fb923c" stroke-width="2" marker-end="url(#arrow-orange)"/>
+  <path d="M 950 565 L 950 600 L 740 600 L 740 620" fill="none" stroke="#fb923c" stroke-width="2" marker-end="url(#arrow-orange)"/>
+
+  <!-- ================= CAPA 4: COLA DE MENSAJES (RABBITMQ) ================= -->
+  <g transform="translate(350, 625)" filter="url(#shadow)">
+    <rect width="500" height="70" rx="10" fill="url(#grad-mq)" stroke="#ea580c" stroke-width="2"/>
+    <text x="250" y="27" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">🐇 COLA DE MENSAJES (RabbitMQ Broker)</text>
+    <text x="250" y="46" text-anchor="middle" fill="#fff7ed" font-size="12">Exchanges (Direct / Topic) | Queues: 'task_queue' &amp; 'results_queue'</text>
+    <text x="250" y="61" text-anchor="middle" fill="#fed7aa" font-size="11">Desacoplamiento Asíncrono | Persistencia de Tareas | Backpressure &amp; ACKs</text>
+  </g>
+
+  <!-- Flechas Capa 4 / Capa 3 -> Capa 5 (Almacenamiento) -->
+  <path d="M 450 695 L 450 735 L 340 735 L 340 750" fill="none" stroke="#34d399" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <path d="M 750 695 L 750 735 L 860 735 L 860 750" fill="none" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow-orange)"/>
+
+  <!-- ================= CAPA 5: ALMACENAMIENTO DISTRIBUIDO ================= -->
+  <g transform="translate(60, 745)">
+    <!-- PostgreSQL -->
+    <g transform="translate(100, 0)" filter="url(#shadow)">
+      <rect width="440" height="75" rx="10" fill="url(#grad-db)" stroke="#10b981" stroke-width="2"/>
+      <circle cx="35" cy="37" r="18" fill="#10b981" fill-opacity="0.3"/>
+      <text x="35" y="43" text-anchor="middle" fill="#34d399" font-size="20">🐘</text>
+      <text x="70" y="27" fill="#ffffff" font-size="15" font-weight="bold">PostgreSQL Clúster Distribuido</text>
+      <text x="70" y="46" fill="#a7f3d0" font-size="11">Persistencia Relacional ACID: Usuarios, Estados de Tareas, Logs</text>
+      <text x="70" y="61" fill="#6ee7b7" font-size="10">Arquitectura Primary (Escritura) - Réplicas (Lectura) / Conexión Pool</text>
+    </g>
+
+    <!-- AWS S3 / Object Storage -->
+    <g transform="translate(580, 0)" filter="url(#shadow)">
+      <rect width="440" height="75" rx="10" fill="url(#grad-s3)" stroke="#f59e0b" stroke-width="2"/>
+      <circle cx="35" cy="37" r="18" fill="#f59e0b" fill-opacity="0.3"/>
+      <text x="35" y="43" text-anchor="middle" fill="#fbbf24" font-size="20">🪣</text>
+      <text x="70" y="27" fill="#ffffff" font-size="15" font-weight="bold">Amazon S3 / MinIO (Object Storage)</text>
+      <text x="70" y="46" fill="#fde68a" font-size="11">Almacenamiento de Blobs: Adjuntos, Imágenes procesadas, Datasets</text>
+      <text x="70" y="61" fill="#fcd34d" font-size="10">Bucket Versionado | Alta Disponibilidad (99.999999999%) | URLs Firmadas</text>
+    </g>
+  </g>
+</svg>

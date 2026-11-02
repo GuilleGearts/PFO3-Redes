@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PFO 3: Rediseño como Sistema Distribuido - Guillermo Aybar</title>
+  <style>
+    :root {
+      --bg-dark: #0f172a;
+      --card-bg: #1e293b;
+      --card-border: #334155;
+      --accent-blue: #38bdf8;
+      --accent-indigo: #818cf8;
+      --accent-green: #34d399;
+      --accent-orange: #fb923c;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding: 2rem 1rem;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--card-border);
+    }
+    .badge {
+      display: inline-block;
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent-blue);
+      border: 1px solid var(--accent-blue);
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    h1 {
+      font-size: 2.4rem;
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-indigo));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+    .meta-info {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.8rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    }
+    h2 {
+      font-size: 1.5rem;
+      color: var(--accent-blue);
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .diagram-container {
+      text-align: center;
+      background: #090d16;
+      border-radius: 10px;
+      padding: 1.5rem;
+      border: 1px solid var(--card-border);
+      overflow-x: auto;
+    }
+    .diagram-container img, .diagram-container svg {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+    .layers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.25rem;
+      margin-top: 1.5rem;
+    }
+    .layer-card {
+      background: rgba(15, 23, 42, 0.7);
+      border-radius: 8px;
+      padding: 1.2rem;
+      border-left: 4px solid var(--accent-blue);
+    }
+    .layer-card.lb { border-left-color: var(--accent-blue); }
+    .layer-card.workers { border-left-color: var(--accent-indigo); }
+    .layer-card.mq { border-left-color: var(--accent-orange); }
+    .layer-card.db { border-left-color: var(--accent-green); }
+    .layer-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+      color: #fff;
+    }
+    .layer-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    /* Simulator */
+    .sim-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+    button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 0.65rem 1.2rem;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    button:hover {
+      background: #1d4ed8;
+      transform: translateY(-1px);
+    }
+    button.secondary {
+      background: #334155;
+    }
+    button.secondary:hover {
+      background: #475569;
+    }
+    .console-box {
+      background: #030712;
+      border: 1px solid #1f2937;
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 0.88rem;
+      color: #38bdf8;
+      min-height: 220px;
+      max-height: 350px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    @media (max-width: 768px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+    code {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-family: monospace;
+      color: var(--accent-blue);
+    }
+    footer {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--card-border);
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <span class="badge">Programación sobre Redes • TSDS 2026</span>
+    <h1>PFO 3: Rediseño como Sistema Distribuido</h1>
+    <p class="meta-info">Alumno: <strong>Guillermo Aybar</strong> | Arquitectura Cliente-Servidor con Sockets, Workers, RabbitMQ y Almacenamiento Distribuido</p>
+  </header>
+
+  <!-- Consigna 1: Diagrama de Arquitectura -->
+  <section class="card">
+    <h2>📐 Consigna 1: Diagrama de Arquitectura Distribuida</h2>
+    <p style="margin-bottom: 1rem; color: var(--text-muted);">
+      Transformación integral del sistema hacia un esquema de alta disponibilidad, concurrencia masiva y desacoplamiento mediante balanceo de carga, clúster de workers multihilo, mensajería asíncrona y persistencia particionada:
+    </p>
+    <div class="diagram-container">
+      <img src="diagrama_arquitectura.svg" alt="Diagrama de Arquitectura Distribuida PFO 3">
+    </div>
+
+    <div class="layers-grid">
+      <div class="layer-card">
+        <div class="layer-title">📱 Capa 1: Clientes Heterogéneos</div>
+        <p class="layer-desc">Aplicaciones móviles (Android/iOS), aplicaciones web modernas (SPA) y clientes en consola por TCP (<code>cliente.py</code>). Se comunican bajo protocolos de red estandarizados sin conocer la topología interna.</p>
+      </div>
+
+      <div class="layer-card lb">
+        <div class="layer-title">⚖️ Capa 2: Balanceador (Nginx/HAProxy)</div>
+        <p class="layer-desc">Punto de entrada único (Single Point of Contact). Aplica algoritmos de balanceo (Round-Robin, Least Connections), terminación TLS/SSL y comprobaciones de estado de salud (<em>health checks</em>).</p>
+      </div>
+
+      <div class="layer-card workers">
+        <div class="layer-title">🖥️ Capa 3: Servidores Workers (Pool de Hilos)</div>
+        <p class="layer-desc">Nodos de servicio implementados en Python (<code>servidor.py</code>) con <code>ThreadPoolExecutor</code>. Desacoplan la recepción del socket del procesamiento intensivo (CPU/IO bound), ejecutando tareas concurrentes.</p>
+      </div>
+
+      <div class="layer-card mq">
+        <div class="layer-title">🐇 Capa 4: Cola de Mensajes (RabbitMQ)</div>
+        <p class="layer-desc">Broker AMQP para comunicación asíncrona inter-servidor. Garantiza entrega garantizada (ACKs), resiliencia ante picos de demanda (backpressure) y desacoplamiento temporal.</p>
+      </div>
+
+      <div class="layer-card db">
+        <div class="layer-title">🗄️ Capa 5: Almacenamiento Distribuido</div>
+        <p class="layer-desc"><strong>PostgreSQL:</strong> Clúster relacional para transacciones ACID y metadatos de tareas.<br><strong>Amazon S3:</strong> Almacenamiento distribuido de objetos masivos (imágenes, adjuntos, backups) con 99.999999999% de durabilidad.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Consigna 2: Demostración Interactiva -->
+  <section class="card">
+    <h2>⚡ Consigna 2: Simulador Interactivo de Tareas por Socket</h2>
+    <p style="margin-bottom: 1.25rem; color: var(--text-muted);">
+      Interactúe en tiempo real con la simulación del clúster de workers. Observe cómo las peticiones distribuyen la carga entre los hilos del pool:
+    </p>
+
+    <div class="sim-controls">
+      <button onclick="simularTarea('calculo_primos', {limite: 15000})">🔢 Tarea: Primos (CPU)</button>
+      <button onclick="simularTarea('hash_criptografico', {rondas: 50000})">🔐 Tarea: Hashing Iterativo</button>
+      <button onclick="simularTarea('procesamiento_texto', {texto: 'Arquitectura distribuida con sockets multihilo'})">📝 Tarea: Minería de Texto</button>
+      <button onclick="simularTarea('almacenamiento_s3', {nombre_archivo: 'dataset_satelital.bin'})">🪣 Tarea: Pipeline S3 + PG</button>
+      <button class="secondary" onclick="simularLoteConcurrente()">🚀 Ráfaga Concurrente (4 tareas)</button>
+      <button class="secondary" onclick="limpiarConsola()">🧹 Limpiar</button>
+    </div>
+
+    <div class="console-box" id="consola">
+[SISTEMA DISTRIBUIDO] Inicializado correctamente.
+[CONEXIÓN] Socket TCP listo en 127.0.0.1:65432 con ThreadPool de 4 Workers.
+Seleccione una acción superior para enviar tareas por socket...
+    </div>
+  </section>
+
+  <!-- Guía Rápida de Archivos del Proyecto -->
+  <section class="card">
+    <h2>📁 Estructura y Componentes del Código</h2>
+    <div class="grid-2">
+      <div>
+        <h3 style="color: var(--accent-indigo); margin-bottom: 0.5rem;">Servidor Sockets (<code>servidor.py</code>)</h3>
+        <ul style="padding-left: 1.2rem; color: var(--text-muted); font-size: 0.95rem;">
+          <li>Apertura y reutilización de socket TCP (<code>SO_REUSEADDR</code>).</li>
+          <li>Gestión de clientes en hilos independientes.</li>
+          <li>Despacho de tareas a <code>concurrent.futures.ThreadPoolExecutor</code>.</li>
+          <li>Protocolo robusto en JSON con delimitación por salto de línea.</li>
+          <li>Métricas en memoria protegidas con <code>threading.Lock</code>.</li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="color: var(--accent-indigo); margin-bottom: 0.5rem;">Cliente Sockets (<code>cliente.py</code>)</h3>
+        <ul style="padding-left: 1.2rem; color: var(--text-muted); font-size: 0.95rem;">
+          <li>Conexión con política de reintentos exponenciales (Clase 10).</li>
+          <li>Menú interactivo en consola y modo automatizado (<code>--auto</code>).</li>
+          <li>Envío estructurado de tareas y medición de latencia ida y vuelta.</li>
+          <li>Verificación y parseo de respuestas JSON del clúster.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Trabajo Práctico Obligatorio 3 • Programación sobre Redes • Tecnicatura Superior en Desarrollo de Software</p>
+    <p>Desarrollado por <strong>Guillermo Aybar</strong> • 2026</p>
+  </footer>
+</div>
+
+<script>
+  let taskIdCounter = 100;
+  const workers = ['WorkerThread_0', 'WorkerThread_1', 'WorkerThread_2', 'WorkerThread_3'];
+  let workerIndex = 0;
+
+  function logConsole(msg) {
+    const box = document.getElementById('consola');
+    box.textContent += "\n" + msg;
+    box.scrollTop = box.scrollHeight;
+  }
+
+  function limpiarConsola() {
+    document.getElementById('consola').textContent = "[SISTEMA DISTRIBUIDO] Consola reiniciada.";
+  }
+
+  function simularTarea(tipo, params) {
+    const taskId = 'task_' + (++taskIdCounter);
+    const worker = workers[workerIndex % workers.length];
+    workerIndex++;
+
+    logConsole(`[CLIENTE -> SOCKET] Enviando tarea: '${tipo}' [ID: ${taskId}]...`);
+    
+    setTimeout(() => {
+      const tiempo = (Math.random() * 0.08 + 0.01).toFixed(4);
+      logConsole(`[SERVIDOR] Petición asignada a ${worker} en el ThreadPool.`);
+      logConsole(`[SOCKET <- SERVIDOR] [OK] Tarea ${taskId} finalizada por ${worker} en ${tiempo}s.`);
+      logConsole(`   » Resultado: ${JSON.stringify(params)} | Estado: COMPLETED\n`);
+    }, 450);
+  }
+
+  function simularLoteConcurrente() {
+    logConsole(`\n[LOTE CONCURRENTE] Transmitiendo ráfaga de 4 tareas simultáneas...`);
+    ['calculo_primos', 'hash_criptografico', 'procesamiento_texto', 'almacenamiento_s3'].forEach((t, i) => {
+      setTimeout(() => {
+        simularTarea(t, {lote_id: 1, idx: i + 1});
+      }, i * 150);
+    });
+  }
+</script>
+
+</body>
+</html>

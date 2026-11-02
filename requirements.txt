@@ -1,0 +1,13 @@
+# ==============================================================================
+# PFO 3: Rediseño como Sistema Distribuido (Cliente-Servidor)
+# Alumno: Guillermo Aybar | TSDS 2026
+# ==============================================================================
+# La implementación núcleo de servidor.py y cliente.py utiliza exclusivamente
+# módulos de la Biblioteca Estándar de Python (socket, threading, concurrent.futures,
+# json, uuid, time, hashlib, sys, os), garantizando portabilidad inmediata sin
+# necesidad de instalar dependencias externas.
+#
+# Opcional (si se desea conectar con instancias reales de RabbitMQ, PostgreSQL o S3):
+# pika>=1.3.2          # Driver oficial de RabbitMQ (AMQP 0-9-1)
+# psycopg2-binary>=2.9.9 # Driver de conexión a PostgreSQL
+# boto3>=1.34.0        # SDK de AWS para operaciones en Amazon S3
